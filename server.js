@@ -49,13 +49,13 @@ app.get("/api/:id", (req, res) => {
     res.json(foundMovieId)
 });
 
-// lägger till en ny film i objektet med ett hårdkodat värde
+// lägger till en ny film i objektet
 /* app.post("/api/movies", (req, res) => {
     movies.push(req.body);
     res.status(201).json(req.body);
 }); */
 
-// lägger till en ny film i objektet med ett hårdkodat värde
+// lägger till en ny film i objektet
 app.post("/api", (req, res) => {
     
     if (!req.body.title) {
@@ -100,7 +100,6 @@ app.post("/api", (req, res) => {
 
 // tar bort filmen med det specifika id:et efter /
 app.delete("/api/:id", (req, res) => {
-    //const id = req.params.id;
     const id = req.params.id;
     const foundMovieId = movies.find((movie) => {
         return movie.id == id // om den är true, kommer den spara id:et
@@ -114,6 +113,21 @@ app.delete("/api/:id", (req, res) => {
     movies.splice(index, 1)
     res.json({ "status": "Filmen med det id:et är borttaget" })
     
+});
+
+// ändrar titeln på en film med det id:et
+app.put("/api/:id", (req, res) => {
+    const id = req.params.id;
+    const foundMovieId = movies.find((movie) => {
+        return movie.id == id // om den är true, kommer den spara id:et
+    })
+    // om man skriver ett id som inte finns på objektet visas detta...
+    if(!foundMovieId) {
+        res.json({ "error": "Tyvärr, detta id finns ej" })
+    }
+
+    foundMovieId.title = req.body.title;
+    res.json({ "status": "Titel är ändrad!" });
 });
 
 app.listen(port, () => {
