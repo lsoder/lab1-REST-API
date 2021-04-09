@@ -82,7 +82,32 @@ app.post("/api", (req, res) => {
     res.json({
         status: "Ny film är tillagd!"
     });
-})
+});
+
+// tar bort en film med den titeln
+/* app.delete("/api/movies", (req, res) => {
+    const index = movies.findIndex(p => p.title == "Ett nytt hopp");
+    const deletedMovies = movies.splice(index, 1);
+    res.json(deletedMovies);
+}) */
+
+// tar bort filmen med det specifika id:et efter /
+app.delete("/api/:id", (req, res) => {
+    //const id = req.params.id;
+    const id = req.params.id;
+    const foundMovieId = movies.find((movie) => {
+        return movie.id == id // om den är true, kommer den spara id:et
+    })
+    // om man skriver ett id som inte finns på objektet visas detta...
+    if(!foundMovieId) {
+        res.json({ "error": "Tyvärr, detta id finns ej" })
+    }
+    
+    const index = movies.indexOf(foundMovieId);
+    movies.splice(index, 1)
+    res.json({ "status": "Filmen med det id:et är borttaget" })
+    
+});
 
 app.listen(port, () => {
     console.log ("App is running on port: ", port)

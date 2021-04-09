@@ -17,3 +17,11 @@ Content-Type: application/json
     "title": "Det mörka hotet",
     "year": 1999
 }
+
+###
+
+DELETE http://localhost:3000/api/movies
+
+###
+
+DELETE http://localhost:3000/api/1
