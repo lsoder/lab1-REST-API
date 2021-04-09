@@ -6,16 +6,19 @@ const movies = [
     {
         "id": 1,
         "title": "Ett nytt hopp",
+        "episod": "IV",
         "Year": 1977
     },
     {
         "id": 2,
         "title": "Rymdimperiet slår tillbaka",
+        "episod": "V",
         "Year": 1980
     },
     {
         "id": 3,
         "title": "Jedins återkomst",
+        "episod": "VI",
         "Year": 1983
     }
 ];
@@ -56,12 +59,15 @@ app.get("/api/:id", (req, res) => {
 app.post("/api", (req, res) => {
     
     if (!req.body.title) {
-        res.json({ "error": "Tyvärr, titel är felstavat..." })
+        res.json({ "error": "Titel är felstavat eller finns ej..." })
+    } else if (!req.body.episod) {
+        res.json({ "error": "Episod är felstavat eller finns ej..." })
     } else if (!req.body.year) {
-        res.json({ "error": "Tyvärr, år är felstavat finns ej..." })
+        res.json({ "error": "År är felstavat eller finns ej..." })
     }
     
     const titleToSave = req.body.title
+    const episodToSave = req.body.episod
     const yearToSave = req.body.year
 
     let idToSave = 0;
@@ -76,6 +82,7 @@ app.post("/api", (req, res) => {
     movies.push({
         id: idToSave,
         title: titleToSave,
+        episod: episodToSave,
         year: yearToSave
     })
 
