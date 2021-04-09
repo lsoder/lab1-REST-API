@@ -22,27 +22,66 @@ const movies = [
 
 app.use(express.json());
 
-// define endpoints here
+// skriver ut en välkomsttext
+app.get("/api", (req, res) => {
+    res.json("Välkommen till mitt API med filmer!")
+})
+
+// hämtar alla filmer som är sparade på objektet movies
 app.get("/api/movies", (req, res) => {
     res.json(movies)
 });
+
+// hämtar den filmen med det id:et efter /
 app.get("/api/:id", (req, res) => {
     const id = req.params.id;
     const foundMovieId = movies.find((movie) => {
         return movie.id == id // om den är true, kommer den spara id:et
     })
+    // om man skriver ett id som inte finns på objektet visas detta...
+    if(!foundMovieId) {
+        res.json({ "error": "Tyvärr, detta id finns ej" })
+    }
     
     res.json(foundMovieId)
 });
 
-// add new movie to list
-app.post("/api/movies", (req, res) => {
+// lägger till en ny film i objektet med ett hårdkodat värde
+/* app.post("/api/movies", (req, res) => {
     movies.push(req.body);
     res.status(201).json(req.body);
-});
+}); */
 
-app.get("/api", (req, res) => {
-    res.json("Välkommen till mitt första API")
+// lägger till en ny film i objektet med ett hårdkodat värde
+app.post("/api", (req, res) => {
+    
+    if (!req.body.title) {
+        res.json({ "error": "Tyvärr, titel är felstavat..." })
+    } else if (!req.body.year) {
+        res.json({ "error": "Tyvärr, år är felstavat finns ej..." })
+    }
+    
+    const titleToSave = req.body.title
+    const yearToSave = req.body.year
+
+    let idToSave = 0;
+    movies.forEach((movie) => {
+        if (movie.id > idToSave) {
+            idToSave = movie.id
+        }
+    })
+
+    idToSave++;
+
+    movies.push({
+        id: idToSave,
+        title: titleToSave,
+        year: yearToSave
+    })
+
+    res.json({
+        status: "Ny film är tillagd!"
+    });
 })
 
 app.listen(port, () => {
