@@ -86,7 +86,7 @@ app.post("/api/movies", (req, res) => {
     id: idToSave,
     title: titleToSave,
     episod: episodToSave,
-    year: yearToSave
+    year: yearToSave,
   };
 
   movies.push(newMovie);
@@ -99,7 +99,7 @@ app.post("/api/movies", (req, res) => {
 app.delete("/api/movies/:id", (req, res) => {
   const id = req.params.id;
   const foundMovieId = movies.find((movie) => {
-    return movie.id == id; // om den är true, kommer den spara id:et
+    return movie.id == id;
   });
 
   // om man skriver ett id som inte finns på objektet visas detta...
